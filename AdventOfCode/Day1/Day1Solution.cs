@@ -16,19 +16,19 @@ namespace AdventOFCode.Day1
             //Part One
             List<int> caloriesList = new();
             string[] AllElfsData = Data.SplitByEmptyLine();
-            foreach(string elf in AllElfsData)
+            foreach (string elf in AllElfsData)
             {
                 int calories = 0;
                 string[] bagpack = elf.SplitByEndOfLine();
-                foreach(string bagpackItem in bagpack)
+                foreach (string bagpackItem in bagpack)
                 {
-                    calories+= int.Parse(bagpackItem);
+                    calories += int.Parse(bagpackItem);
                 }
                 caloriesList.Add(calories);
             }
-            Console.WriteLine($"Biggest value of calories is {caloriesList.Max()} kcal");
+            Console.WriteLine($"Day 1 part one: Biggest value of calories is {caloriesList.Max()} kcal");
             // Part Two
-            Console.WriteLine($"Sum of top 3 calories is {caloriesList.OrderByDescending(x => x).Take(3).Sum()} kcal");
+            Console.WriteLine($"Day 1 part two: Sum of top 3 calories is {caloriesList.OrderByDescending(x => x).Take(3).Sum()} kcal");
         }
 
     }

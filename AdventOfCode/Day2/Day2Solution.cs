@@ -18,7 +18,7 @@ namespace AdventOFCode.Day2
             foreach (string match in matches)
             {
                 string[] vs = match.SplitBySpace();
-                // i know that this
+                // i know that this looks bad :D
                 int result = vs switch
                 {
 
@@ -37,7 +37,7 @@ namespace AdventOFCode.Day2
                 };
                 points += result;
             }
-            Console.WriteLine($"Tournament result is {points} points");
+            Console.WriteLine($"Day 2 part one: Tournament result is {points} points");
             //Part Two
             points = 0;
             foreach (string match in matches)
@@ -61,7 +61,7 @@ namespace AdventOFCode.Day2
                 };
                 points += result;
             }
-            Console.WriteLine($"Tournament second round result is {points} points");
+            Console.WriteLine($"Day 2 part two: Tournament second round result is {points} points");
         }
 
     }
