@@ -21,8 +21,7 @@ namespace AdventOFCode.Day6
         {
             for (int i = 0; i < data.Length; i++)
             {
-                IEnumerable<char> temp = data.Take(i..(i + length)); ;
-                if (temp.Distinct().Count() == temp.Count())
+                if (data.Substring(i, length).Distinct().Count() == length)
                 {
                     Console.WriteLine($"{message} : {i + length}");
                     break;
