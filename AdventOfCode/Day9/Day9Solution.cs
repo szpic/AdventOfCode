@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -16,13 +17,14 @@ namespace AdventOFCode.Day9
         static Direction Right = new Direction(0, 1);
         static Direction Up = new Direction(1, 0);
         static Direction Down = new Direction(-1, 0);
-        HashSet<string> visitedPlaces = new();
+        HashSet<Direction> visitedPlaces = new();
+        HashSet<string> visitedPlaces2= new();
         public override void SolveIssue()
         {
             var commands = Data.SplitByEndOfLine();
             Location head = new();
             Location tail = new();
-            visitedPlaces.Add(tail.ToString());
+            visitedPlaces.Add(new Direction(tail.X,tail.Y));
             foreach (var line in commands)
             {
                 var command = line.SplitBySpace();
@@ -36,22 +38,27 @@ namespace AdventOFCode.Day9
                     MakeMove(head, tail, Left, command[1]);
             }
             Console.WriteLine($"tail visited {visitedPlaces.Count} unique places");
+
         }
 
         public void MakeMove(Location head, Location tail, Direction direction, string count)
         {
             for (int i = 0; i < int.Parse(count); i++)
             {
+                //gdzie byla glowa przed ruchem
+                int x1 = head.X;
+                int x2 = head.Y;
                 head.X += direction.x;
                 head.Y += direction.y;
                 double distance = CheckDistance(head, tail);
-                if (distance == 2)
+                if (distance >= 2)
                 {
-                    
-                    visitedPlaces.Add(tail.ToString());
+                    // ogon na miejscu glowy
+                    tail.X = x1;
+                    tail.Y = x2;
+                    visitedPlaces.Add(new Direction(x1,x2));
+                    visitedPlaces2.Add(tail.ToString());
                 }
-                else if(distance<)
-;
             }
         }
         public double CheckDistance(Location head, Location tail)
@@ -67,13 +74,12 @@ namespace AdventOFCode.Day9
         public int Y { get; set; }
         public Location()
         {
-            X = 0;
-            Y = 0;
+            X = 1;
+            Y = 1;
         }
         public override string ToString()
         {
-            return X.ToString() + Y.ToString();
+            return X.ToString() +"*"+ Y.ToString();
         }
     }
-
 }
