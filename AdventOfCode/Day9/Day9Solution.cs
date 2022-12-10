@@ -18,49 +18,104 @@ namespace AdventOFCode.Day9
         static Direction Up = new Direction(1, 0);
         static Direction Down = new Direction(-1, 0);
         HashSet<Direction> visitedPlaces = new();
-        HashSet<string> visitedPlaces2= new();
         public override void SolveIssue()
         {
             var commands = Data.SplitByEndOfLine();
-            Location head = new();
-            Location tail = new();
-            visitedPlaces.Add(new Direction(tail.X,tail.Y));
+            SolvePart(commands, 2);
+            visitedPlaces.Clear();
+            SolvePart(commands, 10);
+
+        }
+        private void SolvePart(string[] commands, int length)
+        {
+            var rope = Enumerable.Range(0, length).Select(_ => new Location()).ToArray();
+            visitedPlaces.Add(new Direction(1, 1));
             foreach (var line in commands)
             {
                 var command = line.SplitBySpace();
                 if (command[0] == "R")
-                    MakeMove(head, tail, Right, command[1]);
+                    MakeMove(rope, Right, int.Parse(command[1]), length);
                 else if (command[0] == "D")
-                    MakeMove(head, tail, Down, command[1]);
+                    MakeMove(rope, Down, int.Parse(command[1]), length);
                 else if (command[0] == "U")
-                    MakeMove(head, tail, Up, command[1]);
+                    MakeMove(rope, Up, int.Parse(command[1]), length);
                 else
-                    MakeMove(head, tail, Left, command[1]);
+                    MakeMove(rope, Left, int.Parse(command[1]), length);
             }
             Console.WriteLine($"tail visited {visitedPlaces.Count} unique places");
-
         }
 
-        public void MakeMove(Location head, Location tail, Direction direction, string count)
+        public void MakeMove(Location[] rope, Direction direction, int count, int length)
         {
-            for (int i = 0; i < int.Parse(count); i++)
+            for (int i = 0; i < count; i++)
             {
-                //gdzie byla glowa przed ruchem
-                int x1 = head.X;
-                int x2 = head.Y;
-                head.X += direction.x;
-                head.Y += direction.y;
-                double distance = CheckDistance(head, tail);
-                if (distance >= 2)
+                rope[0].X += direction.x;
+                rope[0].Y += direction.y;
+                //move all tales
+                for (int x = 1; x < rope.Length; x++)
                 {
-                    // ogon na miejscu glowy
-                    tail.X = x1;
-                    tail.Y = x2;
-                    visitedPlaces.Add(new Direction(x1,x2));
-                    visitedPlaces2.Add(tail.ToString());
+                    double distance = CheckDistance(rope[x - 1], rope[x]);
+                    if (distance == 2)
+                    {
+                        (int x1, int x2) = GetMove(rope[x - 1], rope[x]);
+                        rope[x].X += x1;
+                        rope[x].Y += x2;
+                    }
+                    else if (distance > 2)
+                    {
+                        (int x1, int x2) = GetDiagonalMove(rope[x - 1], rope[x]);
+                        rope[x].X += x1;
+                        rope[x].Y += x2;
+
+                    }
                 }
+                visitedPlaces.Add(new Direction(rope[length - 1].X, rope[length - 1].Y));
+
             }
         }
+
+        private (int x, int y) GetDiagonalMove(Location head, Location tail)
+        {
+            if(head.X> tail.X)
+            {
+                //upper part
+                if(head.Y> tail.Y)
+                {
+                    return (1, 1);
+                }
+                return (1, -1);
+            }
+            else
+            {
+                //lower part
+                if (head.Y > tail.Y)
+                {
+                    return (-1, 1);
+                }
+                return (-1, -1);
+            }
+        }
+        private (int x, int y) GetMove(Location head, Location tail)
+        {
+            if (head.X == tail.X)
+            {
+                if (head.Y > tail.Y)
+                {
+                    return (0, 1);
+                }
+                return (0, -1);
+            }
+            else
+            {
+                //lower part
+                if (head.X > tail.X)
+                {
+                    return (1, 0);
+                }
+                return (-1, 0);
+            }
+        }
+
         public double CheckDistance(Location head, Location tail)
         {
             return (Math.Sqrt(Math.Pow((head.X - tail.X), 2) + Math.Pow((head.Y - tail.Y), 2)));
@@ -79,7 +134,7 @@ namespace AdventOFCode.Day9
         }
         public override string ToString()
         {
-            return X.ToString() +"*"+ Y.ToString();
+            return X.ToString() + "*" + Y.ToString();
         }
     }
 }
