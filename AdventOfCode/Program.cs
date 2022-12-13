@@ -9,7 +9,7 @@ namespace AdventOFCode.Program
     {
         static void Main()
         {
-            new Day12.Day12Solution().SolveIssue();
+            new Day13.Day13Solution().SolveIssue();
             Console.ReadLine();
         }
     }
