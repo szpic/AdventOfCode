@@ -19,6 +19,9 @@
     <None Update="Inputs\input2.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Inputs\input2023_5.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Inputs\input2023_4.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
